@@ -11,6 +11,7 @@ function FullSearch() {
     const [sub, setSub] = useState(false);
     const [data, setData] = useState([]);
     const [isLoaded, setLoaded] = useState(false);
+    const [error, setError] = useState(false);
     const { auth } = useAuth();
 
     const navigate = useNavigate();
@@ -52,9 +53,14 @@ function FullSearch() {
     }, [auth])
 
     useEffect(() => {
+        const x = setTimeout(() => {
+            setLoaded(true);
+            setError(true);
+        },[5000])
         if (data.length > 0) {
             setLoaded(true);
         }
+        return () => clearTimeout(x);
     },[data])
 
     if (!isLoaded) return (
@@ -69,7 +75,9 @@ function FullSearch() {
                 {sub && <span className="font-bold text-[#1A98FF]">Prime</span>}
                 <span className="font-bold">Favourite Movies and Shows</span>
             </div>
-            <div className="flex justify-start items-center gap-8 relative flex-wrap pl-[30px]">
+            {error ? <div className="text-white text-2xl">No Favourites Found</div>
+                :
+                <div className="flex justify-start items-center gap-8 relative flex-wrap pl-[30px]">
                 {
                     data.map((movie, index) => {
                         if (!(movie?.poster)) return (
@@ -100,7 +108,7 @@ function FullSearch() {
                         )
                     })
                 }
-            </div>
+            </div>}
         </div>
     )
 }
