@@ -59,6 +59,7 @@ function FullSearch() {
         },[5000])
         if (data.length > 0) {
             setLoaded(true);
+            clearTimeout(x);
         }
         return () => clearTimeout(x);
     },[data])
