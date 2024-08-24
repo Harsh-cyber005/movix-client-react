@@ -70,8 +70,8 @@ function FullSearch() {
     )
 
     return (
-        <div className="flex flex-col justify-start items-start mt-7 mb-10 mx-10 pt-[30px] border">
-            <div className="flex items-center gap-7 text-4xl mb-8 border">
+        <div className="flex flex-col justify-start items-start mt-7 mb-10 mx-10 pt-[30px] min-h-full h-auto">
+            <div className="flex items-center gap-7 text-4xl mb-8">
                 {sub && <span className="font-bold text-[#1A98FF]">Prime</span>}
                 <span className="font-bold">Favourite Movies and Shows</span>
             </div>
