@@ -77,7 +77,7 @@ function FullSearch() {
             </div>
             {error ? <div className="text-white text-2xl">No Favourites Found</div>
                 :
-                <div className="flex justify-start items-center gap-8 relative flex-wrap pl-[30px]">
+                <div className="flex justify-start items-start gap-8 relative flex-wrap pl-[30px]">
                 {
                     data.map((movie, index) => {
                         if (!(movie?.poster)) return (
