@@ -2,10 +2,12 @@ import { useRef, useState, useEffect } from "react"
 import useAuth from "../hooks/useAuth";
 import { Link, useNavigate, useLocation } from "react-router-dom"
 import axios from "../api/axios";
+import useRefreshToken from "../hooks/useRefreshToken";
 const LOGIN_URL = "/user/signin";
 
 function Signin() {
   const { setAuth, persist, setPersist } = useAuth();
+  const refresh = useRefreshToken();
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -117,7 +119,7 @@ function Signin() {
               onChange={togglePersist}
               checked={persist}
             />
-            <label htmlFor="persist">Trust this device</label>
+            <label onChange={refresh} htmlFor="persist">Trust this device</label>
           </div>
         </form>
         <p className="m-4 w-[300px]">
