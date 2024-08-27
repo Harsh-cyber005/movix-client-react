@@ -16,7 +16,6 @@ export default function Component() {
                     </p>
                 </div>
                 <div className="mt-12 lg:px-40 grid gap-6 sm:grid-cols-2 lg:mt-16">
-                    {!auth?.user &&
                     <Card>
                         <CardHeader>
                             <CardTitle>Free</CardTitle>
@@ -40,9 +39,9 @@ export default function Component() {
                         <CardFooter>
                             <Button onClick={() => {
                                 navigate("/signin")
-                            }} variant="link" className="w-full">Sign In</Button>
+                            }} variant="link" className="w-full">{auth?.user ? "Continue with Free Plan for now" : "Sign In"}</Button>
                         </CardFooter>
-                    </Card>}
+                    </Card>
                     <Card>
                         <CardHeader>
                             <CardTitle>Pro</CardTitle>
