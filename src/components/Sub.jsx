@@ -22,7 +22,6 @@ export default function Component() {
             {
                 headers: {
                     'Content-Type': 'application/json',
-                    'cors': 'no-cors'
                 }
             }
         );
@@ -46,8 +45,7 @@ export default function Component() {
                     JSON.stringify(body),
                     {
                         headers: {
-                            'Content-Type': 'application/json',
-                            'cors': 'no-cors'
+                            'Content-Type': 'application/json'
                         }
                     }
                 );
@@ -59,8 +57,7 @@ export default function Component() {
                         name: auth?.user
                     }, {
                         headers: {
-                            'Content-Type': 'application/json',
-                            'cors': 'no-cors'
+                            'Content-Type': 'application/json'
                         }
                     })
                     window.location.reload();
