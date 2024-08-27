@@ -236,7 +236,9 @@ function Navbar() {
                         </div>
                     }
                 </div>
-                {(xfactor && sub) && <button className="hover:bg-[#191E25] h-full p-4 min-w-max ">Subscribe Now</button>}
+                {(xfactor && sub) && <button onClick={()=>{
+                    navigate("/sub");
+                }} className="hover:bg-[#191E25] h-full p-4 min-w-max ">Subscribe Now</button>}
                 <div onClick={(e) => {
                     e.stopPropagation();
                     setCategoriesMenuOpen(false);

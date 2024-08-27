@@ -16,40 +16,45 @@ import TrailerPage from "./pages/TrailerPage";
 import Search from "./pages/Search";
 import AdvSearch from "./pages/AdvSearch";
 import FavouritesPage from "./pages/FavouritesPage";
+import SubPage from "./pages/SubPage";
+import IsSubbed from "./pages/IsSubbed";
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-      <Route element={<PersistLogin/>}>
-        <Route path="/" element={<Layout/>}>
-          <Route element={<IsSigned/>}>
-            <Route path="signup" element={<Signup/>} />
-            <Route path="signin" element={<Signin/>} />
-          </Route>
-            <Route element={<RequireAuth/>}>
-              <Route path="*" element={<NoPage/>} />
-              <Route path="/favourites" element={<FavouritesPage/>}/>
+        <Route element={<PersistLogin />}>
+          <Route path="/" element={<Layout />}>
+            <Route element={<IsSigned />}>
+              <Route path="signup" element={<Signup />} />
+              <Route path="signin" element={<Signin />} />
             </Route>
-            <Route path="storefront" element={<StoreFront/>}/>
+            <Route element={<RequireAuth />}>
+              <Route path="*" element={<NoPage />} />
+              <Route path="/favourites" element={<FavouritesPage />} />
+            </Route>
+            <Route path="storefront" element={<StoreFront />} />
             <Route path="genre">
-              <Route path=":genre" element={<Genre/>}/>
+              <Route path=":genre" element={<Genre />} />
             </Route>
             <Route path="lang">
-              <Route path=":lang" element={<Lang/>}/>
+              <Route path=":lang" element={<Lang />} />
             </Route>
             <Route path="detail">
-              <Route path=":id" element={<Detail/>}/>
+              <Route path=":id" element={<Detail />} />
             </Route>
-            <Route index element={<Home/>} />
-            <Route path="search/:query" element={<Search/>}/>
-            <Route path="advancedsearch/:query" element={<AdvSearch/>}/>
+            <Route index element={<Home />} />
+            <Route path="search/:query" element={<Search />} />
+            <Route path="advancedsearch/:query" element={<AdvSearch />} />
+            <Route element={<IsSubbed/>}>
+              <Route path="sub" element={<SubPage />} />
+            </Route>
+          </Route>
+          <Route element={<RequireAuth />}>
+            <Route path="/video/:id" element={<VideoPage />} />
+          </Route>
+          <Route path="trailer/:id" element={<TrailerPage />} />
         </Route>
-        <Route element={<RequireAuth/>}>
-          <Route path="/video/:id" element={<VideoPage/>}/>
-        </Route>
-        <Route path="trailer/:id" element={<TrailerPage/>}/>
-      </Route>
       </Routes>
     </BrowserRouter>
   )

@@ -99,7 +99,7 @@ function Details({ id }) {
 
     const handleMovie = () => {
         if (sub) {
-            navigate("/subscribe");
+            navigate("/sub");
         } else {
             navigate(`/video/${id}`, { state: { name: movie?.title } });
         }
