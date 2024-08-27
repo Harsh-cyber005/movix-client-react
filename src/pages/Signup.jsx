@@ -86,9 +86,9 @@ function Signup() {
 
   return (
     <div className="w-full py-12 md:py-24 lg:py-20 font-semibold bg-black flex flex-col justify-center items-center min-h-screen text-white">
-      <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl mb-10">Sign Up</h1>
+      {!success && <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl mb-10">Sign Up</h1>}
       {success ? (
-        <Card className="w-full max-w-md bg-white shadow-lg rounded-lg text-center">
+        <Card className="w-full max-w-md bg-white shadow-lg rounded-lg text-center text-black">
           <CardContent className="p-6">
             <h1 className="text-2xl font-bold">Success!</h1>
             <p className="mt-2">Your account has been created.</p>

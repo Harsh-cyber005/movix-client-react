@@ -63,7 +63,7 @@ export default function Component() {
                             </ul>
                         </CardContent>
                         <CardFooter className="flex flex-col gap-2 sm:flex-row">
-                            <div className="flex-1 text-center text-2xl font-bold">₹299/month</div>
+                            <div className="flex-1 text-center text-2xl font-bold text-black">₹299/month</div>
                             <Button variant="link" className="w-full sm:w-auto">Subscribe</Button>
                         </CardFooter>
                     </Card>
