@@ -5,12 +5,14 @@ import { Card, CardContent } from '../components/ui/card'; // Update paths if ne
 import { Label } from '../components/ui/label';
 import { Input } from '../components/ui/input';
 import { Button } from '../components/ui/button';
+import { useNavigate } from "react-router-dom";
 
 const USER_REGEX = /^[a-zA-Z][a-zA-Z0-9-_]{3,23}$/;
 const EMAIL_REGEX = /^[a-zA-Z][a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 const REGISTER_URL = "/user/signup";
 
 function Signup() {
+  const navigate = useNavigate();
   const userRef = useRef();
   const errRef = useRef();
 
@@ -88,11 +90,13 @@ function Signup() {
     <div className="w-full py-12 md:py-24 lg:py-20 font-semibold bg-black flex flex-col justify-center items-center min-h-screen text-white">
       {!success && <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl mb-10">Sign Up</h1>}
       {success ? (
-        <Card className="w-full max-w-md bg-white shadow-lg rounded-lg text-center text-black">
+        <Card className="w-full max-w-md bg-white shadow-lg rounded-lg text-center">
           <CardContent className="p-6">
-            <h1 className="text-2xl font-bold">Success!</h1>
-            <p className="mt-2">Your account has been created.</p>
-            <Link to="/signin" className="text-primary hover:underline mt-4 block">Login</Link>
+            <h1 className="text-2xl font-bold text-black">Success!</h1>
+            <p className="mt-2 text-black">Your account has been created.</p>
+            <Button variant="link" onClick={()=>{
+              navigate("/signin");
+            }} className="text-primary hover:underline mt-4 block">Sign In</Button>
           </CardContent>
         </Card>
       ) : (
