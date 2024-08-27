@@ -29,7 +29,7 @@ function App() {
           </Route>
             <Route element={<RequireAuth/>}>
               <Route path="*" element={<NoPage/>} />
-            <Route path="/favourites" element={<FavouritesPage/>}/>
+              <Route path="/favourites" element={<FavouritesPage/>}/>
             </Route>
             <Route path="storefront" element={<StoreFront/>}/>
             <Route path="genre">

@@ -1,10 +1,38 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import axios from "../api/axios";
 import navailable from "../assets/notavailable.jpg";
 import { useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
+
+const useFetchData = () => {
+    const cache = useRef({}); // Use a ref to keep cache persistent across renders
+
+    const fetchData = async (id) => {
+        if (cache.current[id]) {
+            return cache.current[id]; // Return the cached result if it exists
+        }
+
+        try {
+            const result = await axios.post(`/detail`,
+                JSON.stringify({ id: id }),
+                {
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                }
+            );
+            cache.current[id] = result.data[0]; // Store the result in cache
+            return result.data[0];
+        } catch (err) {
+            console.log(err);
+            return null; // Return null or handle error appropriately
+        }
+    };
+
+    return fetchData;
+};
 
 function Details({id}) {
     const [movie, setMovie] = useState([]);
@@ -17,6 +45,8 @@ function Details({id}) {
 
     const [sub, setSub] = useState(false);
 
+    const fetchData = useFetchData();
+
     useEffect(() => {
         if (auth?.plan === undefined) {
             setSub(true);
@@ -26,25 +56,6 @@ function Details({id}) {
             setSub(false);
         }
     }, [auth])
-
-    const fetchData = async () => {
-        try {
-            const result = await axios.post(`/detail`,
-                JSON.stringify({
-                    id: id,
-                }),
-                {
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                }
-            );
-            setMovie(result.data[0]);
-        }
-        catch (err) {
-            console.log(err);
-        }
-    }
 
     const fetchFavourites = async () => {
         try {
@@ -72,10 +83,17 @@ function Details({id}) {
 
     useEffect(() => {
         window.scrollTo(0, 0);
-        if(id === undefined) return;
-        if(id === "") return;
-        fetchData();
-    }, [id])
+        if (id === undefined || id === "") return;
+
+        const getData = async () => {
+            const data = await fetchData(id);
+            if (data) {
+                setMovie(data);
+            }
+        };
+
+        getData();
+    }, [id, fetchData]);
 
     useEffect(() => {
         if (favourites?.includes(id)) {
