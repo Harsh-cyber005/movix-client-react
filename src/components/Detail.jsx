@@ -1,51 +1,23 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import axios from "../api/axios";
 import navailable from "../assets/notavailable.jpg";
 import { useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
+import DetailSkeleton from "./DetailSkeleton";
 
-const useFetchData = () => {
-    const cache = useRef({}); // Use a ref to keep cache persistent across renders
-
-    const fetchData = async (id) => {
-        if (cache.current[id]) {
-            return cache.current[id]; // Return the cached result if it exists
-        }
-
-        try {
-            const result = await axios.post(`/detail`,
-                JSON.stringify({ id: id }),
-                {
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                }
-            );
-            cache.current[id] = result.data[0]; // Store the result in cache
-            return result.data[0];
-        } catch (err) {
-            console.log(err);
-            return null; // Return null or handle error appropriately
-        }
-    };
-
-    return fetchData;
-};
-
-function Details({id}) {
+function Details({ id }) {
     const [movie, setMovie] = useState([]);
     const [favourites, setFavourites] = useState([]);
 
     const [isFavorite, setIsFavorite] = useState(false);
-    
+    const [loading, setLoading] = useState(true);
+
     const navigate = useNavigate();
     const { auth } = useAuth();
 
     const [sub, setSub] = useState(false);
-
-    const fetchData = useFetchData();
 
     useEffect(() => {
         if (auth?.plan === undefined) {
@@ -56,6 +28,25 @@ function Details({id}) {
             setSub(false);
         }
     }, [auth])
+
+    const fetchData = async () => {
+        try {
+            const result = await axios.post(`/detail`,
+                JSON.stringify({
+                    id: id,
+                }),
+                {
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                }
+            );
+            setMovie(result.data[0]);
+        }
+        catch (err) {
+            console.log(err);
+        }
+    }
 
     const fetchFavourites = async () => {
         try {
@@ -79,21 +70,15 @@ function Details({id}) {
 
     useEffect(() => {
         fetchFavourites();
-    },[auth])
+    }, [auth])
 
     useEffect(() => {
         window.scrollTo(0, 0);
-        if (id === undefined || id === "") return;
-
-        const getData = async () => {
-            const data = await fetchData(id);
-            if (data) {
-                setMovie(data);
-            }
-        };
-
-        getData();
-    }, [id, fetchData]);
+        if (id === undefined) return;
+        if (id === "") return;
+        fetchData();
+        setLoading(false);
+    }, [id])
 
     useEffect(() => {
         if (favourites?.includes(id)) {
@@ -101,7 +86,7 @@ function Details({id}) {
         } else {
             setIsFavorite(false);
         }
-    },[favourites])
+    }, [favourites])
 
     const timeConvert = (n) => {
         var num = n;
@@ -116,7 +101,7 @@ function Details({id}) {
         if (sub) {
             navigate("/subscribe");
         } else {
-            navigate(`/video/${id}`,{state: {name: movie?.title}});
+            navigate(`/video/${id}`, { state: { name: movie?.title } });
         }
     }
 
@@ -166,6 +151,8 @@ function Details({id}) {
         }
     }
 
+    if (loading) return <DetailSkeleton />
+
     return (
         <div className="bg-[#00050D] h-auto min-h-screen w-screen flex justify-start items-start text-white pt-[100px]">
             <div className=" w-[70%] h-auto flex flex-col justify-center px-[50px] gap-3 pt-[100px] mb-[500px]">
@@ -179,27 +166,27 @@ function Details({id}) {
                 </div>
                 <div className="text-xl font-semibold flex justify-start items-center gap-3 underline">
                     {
-                    movie?.genres?.map((genre, index) => (
-                        <span onClick={()=>{
-                            genre = genre.toLowerCase();
-                            navigate(`/genre/${genre}`, { state: { genre: genre } });
-                        }} className="cursor-pointer" key={index}>{genre} </span>
-                    ))
+                        movie?.genres?.map((genre, index) => (
+                            <span onClick={() => {
+                                genre = genre.toLowerCase();
+                                navigate(`/genre/${genre}`, { state: { genre: genre } });
+                            }} className="cursor-pointer" key={index}>{genre} </span>
+                        ))
                     }
                 </div>
                 {sub && <div className="text-xl font-semibold mt-4">Watch with a <span className="text-sky-500">Prime</span> membership</div>}
                 <div className="text-xl font-semibold flex justify-start items-center gap-4">
-                    <button onClick={handleMovie} className="rounded-md py-4 px-6 bg-white text-black hover:scale-105 duration-200">{!sub?"Watch Now":"Watch with Prime"}</button>
-                    <button onClick={()=>{
+                    <button onClick={handleMovie} className="rounded-md py-4 px-6 bg-white text-black hover:scale-105 duration-200">{!sub ? "Watch Now" : "Watch with Prime"}</button>
+                    <button onClick={() => {
                         navigate(`/trailer/${id}`);
                     }} className="rounded-md py-4 px-6 bg-[#383D42] hover:bg-white hover:text-black hover:scale-105 duration-200">Watch Trailer</button>
-                    { (auth?.user && !isFavorite) && <button onClick={handleFavourites} className="rounded-md py-4 px-6 bg-[#383D42] hover:bg-white hover:text-black hover:scale-105 duration-200">Add to Favourites</button>}
-                    { (auth?.user && isFavorite) && <button onClick={handleRemoveFavourites} className="rounded-md py-4 px-6 bg-[#383D42] hover:bg-white hover:text-black hover:scale-105 duration-200">Remove from Favourites</button>}
+                    {auth?.user && !isFavorite && <button onClick={handleFavourites} className="rounded-md py-4 px-6 bg-[#383D42] hover:bg-white hover:text-black hover:scale-105 duration-200">Add to Favourites</button>}
+                    {auth?.user && isFavorite && <button onClick={handleRemoveFavourites} className="rounded-md py-4 px-6 bg-[#383D42] hover:bg-white hover:text-black hover:scale-105 duration-200">Remove from Favourites</button>}
                 </div>
             </div>
             <div className="w-[40%] h-screen flex justify-end items-center absolute z-0 right-0">
                 {
-                    movie?.poster ? <img className="h-full object-contain fade-overlay" src={movie?.poster} alt={movie?.title} onError={(e)=>{
+                    movie?.poster ? <img className="h-full object-contain fade-overlay" src={movie?.poster} alt={movie?.title} onError={(e) => {
                         e.target.onerror = null;
                         e.target.src = navailable;
                     }} /> : <img className="h-full object-contain fade-overlay" src={navailable} alt={movie?.title} />
