@@ -59,6 +59,7 @@ function FullSearch() {
         },[5000])
         if (data.length > 0) {
             setLoaded(true);
+            clearTimeout(x);
         }
         return () => clearTimeout(x);
     },[data])
@@ -70,14 +71,14 @@ function FullSearch() {
     )
 
     return (
-        <div className="flex flex-col justify-start items-start mt-7 mb-10 mx-10 pt-[30px]">
+        <div className="flex flex-col justify-start items-start mt-7 mb-10 mx-10 pt-[30px] min-h-full h-auto">
             <div className="flex items-center gap-7 text-4xl mb-8">
                 {sub && <span className="font-bold text-[#1A98FF]">Prime</span>}
                 <span className="font-bold">Favourite Movies and Shows</span>
             </div>
             {error ? <div className="text-white text-2xl">No Favourites Found</div>
                 :
-                <div className="flex justify-start items-center gap-8 relative flex-wrap pl-[30px]">
+                <div className="flex justify-start items-start gap-8 relative flex-wrap pl-[30px]">
                 {
                     data.map((movie, index) => {
                         if (!(movie?.poster)) return (
