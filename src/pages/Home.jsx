@@ -2,7 +2,8 @@
 import React, { useState } from "react";
 import useAuth from "../hooks/useAuth"
 import {Link} from "react-router-dom";
-import { useNavigate } from "node_modules/react-router-dom/dist/index";
+import { useNavigate } from 'react-router-dom';
+
 function Home() {
   const { auth } = useAuth();
   const [sub,setSub] = useState(false);
@@ -19,6 +20,9 @@ function Home() {
       setSub(true);
     } else {
       setSub(false);
+    }
+    if(auth?.user){
+      navigate("/storefront")
     }
   },[auth])
 
