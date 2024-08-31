@@ -2,9 +2,12 @@
 import React, { useState } from "react";
 import useAuth from "../hooks/useAuth"
 import {Link} from "react-router-dom";
+import { useNavigate } from "node_modules/react-router-dom/dist/index";
 function Home() {
   const { auth } = useAuth();
   const [sub,setSub] = useState(false);
+
+  const navigate = useNavigate();
 
   React.useEffect(()=>{
     if(auth?.user == undefined){
@@ -16,6 +19,10 @@ function Home() {
       setSub(true);
     } else {
       setSub(false);
+    }
+
+    if(auth?.user){
+      navigate("/storefront");
     }
   },[auth])
 
