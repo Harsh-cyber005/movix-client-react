@@ -20,10 +20,6 @@ function Home() {
     } else {
       setSub(false);
     }
-
-    if(auth?.user){
-      navigate("/storefront");
-    }
   },[auth])
 
   return (
