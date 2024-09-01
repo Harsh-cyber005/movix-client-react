@@ -5,7 +5,7 @@ import VideoPlayer from "../components/VideoPlayer";
 import { useParams } from "react-router-dom";
 
 function VideoPage() {
-    const src = "https://s3.ap-south-1.amazonaws.com/hls.harshmax.dev/videos/index.m3u8";
+    const src = "https://s3.ap-south-1.amazonaws.com/hls.harshmax-zeus.dev/videos/sniper/main.m3u8";
     const [name, setName] = useState("");
     const { id } = useParams();
     const fetchData = async () => {
